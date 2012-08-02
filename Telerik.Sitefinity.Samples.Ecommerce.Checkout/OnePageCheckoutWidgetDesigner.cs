@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using Telerik.Sitefinity.Web.UI;
 using Telerik.Sitefinity.Web.UI.ControlDesign;
-using System.Web.UI.WebControls;
-using System.Web.UI;
 using Telerik.Web.UI;
-
 
 namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
 {

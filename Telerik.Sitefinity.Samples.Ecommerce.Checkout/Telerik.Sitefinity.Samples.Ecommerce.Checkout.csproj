@@ -44,21 +44,30 @@
     <Reference Include="System.Xml" />
     <Reference Include="Telerik.OpenAccess, Version=2010.3.1306.1, Culture=neutral, PublicKeyToken=7ce17eeaf1d59342, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\quantum-new\bin\Telerik.OpenAccess.dll</HintPath>
+      <HintPath>Reference Assemblies\Telerik.OpenAccess.dll</HintPath>
     </Reference>
-    <Reference Include="Telerik.Sitefinity">
-      <HintPath>..\quantum-new\bin\Telerik.Sitefinity.dll</HintPath>
+    <Reference Include="Telerik.Sitefinity, Version=5.1.4589.17688, Culture=neutral, PublicKeyToken=b28c218413bdf563, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Reference Assemblies\Telerik.Sitefinity.dll</HintPath>
     </Reference>
-    <Reference Include="Telerik.Sitefinity.Model">
-      <HintPath>..\quantum-new\bin\Telerik.Sitefinity.Model.dll</HintPath>
+    <Reference Include="Telerik.Sitefinity.Ecommerce, Version=5.1.4589.17892, Culture=neutral, PublicKeyToken=b28c218413bdf563, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Reference Assemblies\Telerik.Sitefinity.Ecommerce.dll</HintPath>
     </Reference>
-    <Reference Include="Telerik.Web.UI">
-      <HintPath>..\quantum-new\bin\Telerik.Web.UI.dll</HintPath>
+    <Reference Include="Telerik.Sitefinity.Model, Version=5.1.4589.17654, Culture=neutral, PublicKeyToken=b28c218413bdf563, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Reference Assemblies\Telerik.Sitefinity.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Web.UI, Version=2012.2.607.40, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Reference Assemblies\Telerik.Web.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\CustomerAddressHelper.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\Util.cs" />
+    <Compile Include="Model\BillingShippingUserInfo.cs" />
     <Compile Include="OnePageCheckoutWidgetDesigner.cs" />
     <Compile Include="Helpers\CartHelper.cs" />
     <Compile Include="Helpers\CountryHelper.cs" />
