@@ -141,4 +141,3 @@ Telerik.Sitefinity.Samples.Ecommerce.Checkout.OnePageCheckoutWidgetDesigner.prot
 }
 
 Telerik.Sitefinity.Samples.Ecommerce.Checkout.OnePageCheckoutWidgetDesigner.registerClass('Telerik.Sitefinity.Samples.Ecommerce.Checkout.OnePageCheckoutWidgetDesigner', Telerik.Sitefinity.Web.UI.ControlDesign.ControlDesignerBase);
-if (typeof (Sys) !== 'undefined') Sys.Application.notifyScriptLoaded();

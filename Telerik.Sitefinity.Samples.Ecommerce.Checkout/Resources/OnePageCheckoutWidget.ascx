@@ -14,7 +14,9 @@
 <div id="widgetStatus" runat="server" visible="false">
     <asp:Label ID="widgetStatusMessage" runat="server" />
 </div>
-
+<asp:Panel ID="paymentProblemPanel" runat="server" Visible="false">
+    <sf:Message runat="server" ID="message" ElementTag="div" FadeDuration="10" />
+</asp:Panel>
 <div id="widget" runat="server">
     <fieldset id="billingForm" class="sfcheckoutBillingFormWrp sfcheckoutFormWrp" runat="server"
         >

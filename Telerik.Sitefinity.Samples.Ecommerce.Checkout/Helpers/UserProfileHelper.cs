@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
-using Telerik.Sitefinity.Security.Model;
-using Telerik.Sitefinity.Security;
+using Telerik.Sitefinity.Data;
 using Telerik.Sitefinity.Ecommerce.Orders.Model;
 using Telerik.Sitefinity.Modules.Ecommerce.Catalog;
-using Telerik.Sitefinity.Data;
-using Telerik.Sitefinity.SitefinityExceptions;
-using Telerik.Sitefinity.Security.Data;
 using Telerik.Sitefinity.Modules.Ecommerce.Orders;
+using Telerik.Sitefinity.Modules.Ecommerce.Orders.Business;
 using Telerik.Sitefinity.Modules.Ecommerce.Orders.Web.UI.CheckoutViews;
+using Telerik.Sitefinity.Security;
+using Telerik.Sitefinity.Security.Model;
+using Telerik.Sitefinity.SitefinityExceptions;
 
 namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
 {
@@ -16,6 +16,10 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
     {
         internal static SitefinityProfile GetSitefinityProfileOfUser(User user)
         {
+            if (user == null)
+            {
+                return null;
+            }
             UserProfileManager userProfileManager = UserProfileManager.GetManager();
             foreach (var manager in userProfileManager.Providers.Select(provider => UserProfileManager.GetManager(provider.Name)))
             {
@@ -38,14 +42,9 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
             return SecurityManager.GetCurrentUserId();
         }
 
-        internal static CustomerProfile GetCustomerProfileOfUser(UserProfileManager profileManager, User user)
+        internal static User GetCurrentlyLoggedInUser()
         {
-            return profileManager.GetUserProfile<CustomerProfile>(user);
-        }
-
-        internal static CustomerProfile GetCustomerProfileOfCurrentUser(UserProfileManager profileManager)
-        {
-            return GetCustomerProfileOfUser(profileManager, SecurityManager.GetUser(SecurityManager.GetCurrentUserId()));
+            return SecurityManager.GetUser(SecurityManager.GetCurrentUserId());
         }
 
         internal static void AssignCustomerToRoles(UserManager userManager, RoleManager roleManager, CatalogManager catalogManager, Guid userId, Order order)
@@ -81,8 +80,9 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
 
         internal static Customer GetCustomerInfoOrCreateOneIfDoesntExsist(UserProfileManager userProfileManager, OrdersManager ordersManager, CheckoutState checkoutState)
         {
+            var customerRetriever = new CustomerRetriever(ordersManager, userProfileManager);
+
             User customerUser = null;
-            CustomerProfile customerProfile = null;
             Customer customer = null;
 
             Guid userId = SecurityManager.CurrentUserId;
@@ -92,33 +92,7 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
                 if (customerUser != null)
                 {
 
-                    foreach (UserProfileDataProvider dataProvider in userProfileManager.Providers)
-                    {
-                        UserProfileManager subUserManager = UserProfileManager.GetManager(dataProvider.Name);
-                        customerProfile = subUserManager.GetUserProfile<CustomerProfile>(customerUser);
-                        if (customerProfile != null)
-                        {
-                            Guid guid = customerProfile.Id;
-                            customer = ordersManager.GetCustomers().Where(c => c.ProfileId == guid).SingleOrDefault();
-                        }
-                    }
-
-                }
-            }
-
-            if (customer == null)
-            {
-                // Customer does not exist in database, so create a new one
-                customer = ordersManager.CreateCustomer();
-                if (customerProfile != null)
-                {
-                    customer.ProfileId = customerProfile.Id;
-                }
-                else
-                {
-                    customer.CustomerFirstName = checkoutState.BillingFirstName;
-                    customer.CustomerLastName = checkoutState.BillingLastName;
-                    customer.CustomerEmail = checkoutState.BillingEmail;
+                    customer = customerRetriever.GetCustomer(customerUser, checkoutState);
                 }
             }
 

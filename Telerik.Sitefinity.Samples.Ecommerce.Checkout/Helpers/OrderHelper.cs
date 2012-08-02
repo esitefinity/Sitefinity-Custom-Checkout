@@ -15,9 +15,8 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
     {
         private static readonly object orderNumberLock = new object();
 
-        internal static void PlaceOrder(OrdersManager ordersManager, CatalogManager catalogManager, UserManager userManager, RoleManager roleManager, UserProfileManager userProfileManager, CheckoutState checkoutState, Guid cartOrderId)
+        internal static Tuple<bool, IPaymentResponse> PlaceOrder(OrdersManager ordersManager, CatalogManager catalogManager, UserManager userManager, RoleManager roleManager, UserProfileManager userProfileManager, CheckoutState checkoutState, Guid cartOrderId)
         {
-
             CartOrder cartOrder = ordersManager.GetCartOrder(cartOrderId);
             cartOrder.Addresses.Clear();
             cartOrder.Payments.Clear();
@@ -50,6 +49,9 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
 
             Customer customer = UserProfileHelper.GetCustomerInfoOrCreateOneIfDoesntExsist(userProfileManager,ordersManager, checkoutState);
 
+            // Save the customer address
+            CustomerAddressHelper.SaveCustomerAddressOfCurrentUser(checkoutState, customer);
+            
             //Use the API to checkout
             IPaymentResponse paymentResponse = ordersManager.Checkout(cartOrderId, checkoutState, customer);
 
@@ -66,29 +68,13 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
 
             // Update the order
             order.Customer = customer;
-            if (Config.Get<EcommerceConfig>().BypassPaymentProcessing)
-            {
-                order.OrderStatus = OrderStatus.Pending;
-            }
-            else
-            {
-                order.OrderStatus = OrderStatus.Declined;
-                if (paymentResponse.IsSuccess)
-                {
-                    if (paymentResponse.IsAuthorizeOnlyTransaction)
-                    {
-                        //If it the transaction is successful and the request is only for authorize then mark the order as authorized
-                        order.OrderStatus = OrderStatus.Authorized;
-                    }
-                    else
-                    {
-                        order.OrderStatus = checkoutState.PaymentMethodType == PaymentMethodType.Offline ? OrderStatus.Pending : OrderStatus.Paid;
-                    }
-                }
-            }
+           
             ordersManager.SaveChanges();
 
-
+            if (!paymentResponse.IsSuccess)
+            {
+                return new Tuple<bool, IPaymentResponse>(false, paymentResponse);
+            }
 
             if (order.OrderStatus == OrderStatus.Paid)
             {
@@ -96,6 +82,7 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
                 EmailHelper.SendOrderPlacedEmailToClientAndMerchant(cartOrder, checkoutState, order.OrderNumber);
             }
 
+            return new Tuple<bool, IPaymentResponse>(true, paymentResponse);
         }
 
         private static void IncrementOrderNumber(OrdersManager ordersManager, Order order)

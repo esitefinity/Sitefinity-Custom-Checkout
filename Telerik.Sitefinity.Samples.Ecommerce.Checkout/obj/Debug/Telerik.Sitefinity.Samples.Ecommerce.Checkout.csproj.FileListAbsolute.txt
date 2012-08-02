@@ -39,41 +39,41 @@ C:\!Sitefinity\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Microsoft
 C:\!Sitefinity\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Newtonsoft.Json.xml
 C:\!Sitefinity\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.dll
 C:\!Sitefinity\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.pdb
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.pdb
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Model.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Web.UI.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Utilities.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.OpenAccess.35.Extensions.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Reporting.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Microsoft.Http.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.OpenAccess.Web.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Windows.RadUploadHandler.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Services.Notifications.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\DocumentFormat.OpenXml.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.MigrationContracts.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Microsoft.WindowsAzure.StorageClient.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.ReportViewer.WebForms.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Payflow_dotNET.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Twitterizer2.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\AjaxControlToolkit.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Microsoft.WindowsAzure.Diagnostics.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Microsoft.Practices.ServiceLocation.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\DirectShowLib-2005.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Newtonsoft.Json.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.xml
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Model.xml
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Web.UI.xml
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Utilities.xml
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.OpenAccess.35.Extensions.xml
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Reporting.xml
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.OpenAccess.Web.xml
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\DocumentFormat.OpenXml.xml
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.ReportViewer.WebForms.xml
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Twitterizer2.xml
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Microsoft.Practices.ServiceLocation.xml
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Newtonsoft.Json.xml
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\ResolveAssemblyReference.cache
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.dll
-C:\workspace\OnePage\2\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.pdb
+C:\workspace\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.dll
+C:\workspace\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.pdb
+C:\workspace\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.OpenAccess.35.Extensions.dll
+C:\workspace\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.OpenAccess.Web.dll
+C:\workspace\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Windows.RadUploadHandler.dll
+C:\workspace\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.OpenAccess.35.Extensions.xml
+C:\workspace\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.OpenAccess.Web.xml
+C:\workspace\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\ResolveAssemblyReference.cache
+C:\workspace\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.dll
+C:\workspace\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.pdb
+C:\workspace\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Windows.RadUploadHandler.pdb
+C:\workspace\Quantum5.1.3210_with_1page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\ResolveAssemblyReference.cache
+C:\workspace\Quantum5.1.3210_with_1page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.dll
+C:\workspace\Quantum5.1.3210_with_1page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.pdb
+C:\!Sitefinity\Projects\Quantum51-OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\ResolveAssemblyReference.cache
+C:\!Sitefinity\Projects\Quantum51-OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.dll
+C:\!Sitefinity\Projects\Quantum51-OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.pdb
+C:\!Sitefinity\Projects\Quantum51-OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.dll
+C:\!Sitefinity\Projects\Quantum51-OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.pdb
+C:\!Sitefinity\Projects\Quantum51-OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.OpenAccess.dll
+C:\!Sitefinity\Projects\Quantum51-OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.dll
+C:\!Sitefinity\Projects\Quantum51-OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Ecommerce.dll
+C:\!Sitefinity\Projects\Quantum51-OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Model.dll
+C:\!Sitefinity\Projects\Quantum51-OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Web.UI.dll
+C:\!Sitefinity\Projects\Quantum51-OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Windows.RadUploadHandler.dll
+C:\!Sitefinity\Projects\Quantum51-OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Windows.RadUploadHandler.pdb
+C:\!Sitefinity\Projects\Quantum5.1 SP1 - One Page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.dll
+C:\!Sitefinity\Projects\Quantum5.1 SP1 - One Page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.pdb
+C:\!Sitefinity\Projects\Quantum5.1 SP1 - One Page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.OpenAccess.dll
+C:\!Sitefinity\Projects\Quantum5.1 SP1 - One Page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.dll
+C:\!Sitefinity\Projects\Quantum5.1 SP1 - One Page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Ecommerce.dll
+C:\!Sitefinity\Projects\Quantum5.1 SP1 - One Page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Model.dll
+C:\!Sitefinity\Projects\Quantum5.1 SP1 - One Page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Web.UI.dll
+C:\!Sitefinity\Projects\Quantum5.1 SP1 - One Page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Windows.RadUploadHandler.dll
+C:\!Sitefinity\Projects\Quantum5.1 SP1 - One Page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Windows.RadUploadHandler.pdb
+C:\!Sitefinity\Projects\Quantum5.1 SP1 - One Page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\ResolveAssemblyReference.cache
+C:\!Sitefinity\Projects\Quantum5.1 SP1 - One Page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.dll
+C:\!Sitefinity\Projects\Quantum5.1 SP1 - One Page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.pdb

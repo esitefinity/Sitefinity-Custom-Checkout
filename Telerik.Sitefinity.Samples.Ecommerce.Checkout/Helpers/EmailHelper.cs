@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Telerik.Sitefinity.Ecommerce.Orders.Model;
-using Telerik.Sitefinity.Modules.Ecommerce.Orders.Web.UI.CheckoutViews;
-using Telerik.Sitefinity.Configuration;
-using Telerik.Sitefinity.Modules.Ecommerce.Configuration;
-using Telerik.Sitefinity.Localization;
-using Telerik.Sitefinity.Modules.Ecommerce.Orders;
-using Telerik.Sitefinity.Pages.Model;
-using Telerik.Sitefinity.Modules.Pages;
-using Telerik.Sitefinity.Modules.Ecommerce.Orders.Business;
-using Telerik.Sitefinity.Services;
-using System.Net.Mail;
 using System.Net;
+using System.Net.Mail;
+using Telerik.Sitefinity.Configuration;
+using Telerik.Sitefinity.Ecommerce.Orders.Model;
+using Telerik.Sitefinity.Localization;
+using Telerik.Sitefinity.Modules.Ecommerce.Configuration;
+using Telerik.Sitefinity.Modules.Ecommerce.Orders;
+using Telerik.Sitefinity.Modules.Ecommerce.Orders.Business;
+using Telerik.Sitefinity.Modules.Ecommerce.Orders.Web.UI.CheckoutViews;
+using Telerik.Sitefinity.Modules.Pages;
+using Telerik.Sitefinity.Pages.Model;
+using Telerik.Sitefinity.Services;
 
 namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
 {
@@ -49,11 +47,13 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
 
         private static string ReplaceValuesInTemplate(string template, CheckoutState checkoutSate, CartOrder cartOrder)
         {
-            CheckoutState checkoutState = checkoutSate;
-
-            var orderConfirmationEmailTemplateFormatter = new OrderConfirmationEmailTemplateFormatter();
-            return orderConfirmationEmailTemplateFormatter.ReplaceValuesInTemplate(template,
-                cartOrder.Details, cartOrder.Discounts, checkoutState, cartOrder);
+            var order = OrdersManager.GetManager().GetOrder(cartOrder.Id);
+            if (order != null)
+            {
+                var orderConfirmationEmailTemplateFormatter = new OrderConfirmationEmailTemplateFormatter();
+                return orderConfirmationEmailTemplateFormatter.ReplaceValuesInTemplate(template, checkoutSate, order);
+            }
+            return string.Empty;
         }
 
         private static void SendEmail(string from, string to, string subject, string body, bool isHtml)
