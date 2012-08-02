@@ -1,28 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Telerik.Sitefinity.Web.UI;
-using Telerik.Sitefinity.Modules.Ecommerce.Orders.Web.UI;
-using Telerik.Sitefinity.Modules.Ecommerce.Orders;
-using Telerik.Sitefinity.Modules.Ecommerce.Catalog;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using Telerik.Web.UI;
-using Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers;
-using Telerik.Sitefinity.Modules.Ecommerce.Configuration;
-using Telerik.Sitefinity.Modules.Ecommerce.Shipping;
-using Telerik.Sitefinity.Samples.Ecommerce.Checkout.Model;
-using Telerik.Sitefinity.Security.Model;
-using Telerik.Sitefinity.Web.UI.Fields;
-using Telerik.Sitefinity.Ecommerce.Orders.Model;
-using Telerik.Sitefinity.Security;
-using Telerik.Sitefinity.Modules.Ecommerce.Orders.Web.UI.CheckoutViews;
-using Telerik.Sitefinity.Modules.Ecommerce.Orders.Business;
-using Telerik.Sitefinity.Ecommerce.Payment.Model;
 using System.Web.UI.HtmlControls;
-using Telerik.Sitefinity.Web.UI.ControlDesign;
-using Telerik.Sitefinity.Pages.Model;
+using System.Web.UI.WebControls;
+using Telerik.Sitefinity.Ecommerce.Orders.Model;
+using Telerik.Sitefinity.Ecommerce.Payment.Model;
 using Telerik.Sitefinity.Modules.Ecommerce;
+using Telerik.Sitefinity.Modules.Ecommerce.Catalog;
+using Telerik.Sitefinity.Modules.Ecommerce.Configuration;
+using Telerik.Sitefinity.Modules.Ecommerce.Orders;
+using Telerik.Sitefinity.Modules.Ecommerce.Orders.Business;
+using Telerik.Sitefinity.Modules.Ecommerce.Orders.Web.UI;
+using Telerik.Sitefinity.Modules.Ecommerce.Orders.Web.UI.CheckoutViews;
+using Telerik.Sitefinity.Modules.Ecommerce.Shipping;
+using Telerik.Sitefinity.Pages.Model;
+using Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers;
+using Telerik.Sitefinity.Samples.Ecommerce.Checkout.Model;
+using Telerik.Sitefinity.Security;
+using Telerik.Sitefinity.Web.UI;
+using Telerik.Sitefinity.Web.UI.ControlDesign;
+using Telerik.Sitefinity.Web.UI.Fields;
+using Telerik.Web.UI;
 
 namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
 {
@@ -236,7 +235,7 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
             }
         }
 
-        
+
         protected virtual RadComboBox StateShipping
         {
             get
@@ -374,6 +373,22 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
             }
         }
 
+        protected virtual Panel PaymentProblemPanel
+        {
+            get
+            {
+                return this.Container.GetControl<Panel>("paymentProblemPanel", true);
+            }
+        }
+
+        protected virtual Message MessageControl
+        {
+            get
+            {
+                return this.Container.GetControl<Message>("message", true);
+            }
+        }
+
         protected OrdersManager OrdersManager
         {
             get
@@ -500,7 +515,16 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
             {
                 CheckoutState checkoutState = GetCheckoutState();
                 Guid cartId = this.GetShoppingCartId();
-                OrderHelper.PlaceOrder(this.OrdersManager, this.CatalogManager, this.UserManager, this.RoleManager, this.UserProfileManager, checkoutState, cartId);
+                Tuple<bool, IPaymentResponse> orderStatusInfo = OrderHelper.PlaceOrder(this.OrdersManager, this.CatalogManager, this.UserManager, this.RoleManager, this.UserProfileManager, checkoutState, cartId);
+
+                if (!orderStatusInfo.Item1)
+                {
+                    // Order was declined
+                    this.PaymentProblemPanel.Visible = true;
+                    this.MessageControl.ShowNegativeMessage(orderStatusInfo.Item2.GatewayResponse);
+                    return;
+                }
+
                 CleanUp();
 
 
@@ -522,9 +546,9 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
             isValid = this.EmailBilling.IsValid() && isValid;
             isValid = this.Address1Billing.IsValid() && isValid;
             isValid = this.CityBilling.IsValid() && isValid;
-            isValid = this.ZipBilling.IsValid() && isValid;            
+            isValid = this.ZipBilling.IsValid() && isValid;
 
-            if (UseBillingAddressAsShippingAddress!= null && !UseBillingAddressAsShippingAddress.Checked)
+            if (UseBillingAddressAsShippingAddress != null && !UseBillingAddressAsShippingAddress.Checked)
             {
                 isValid = this.FirstNameShipping.IsValid() && isValid;
                 isValid = this.LastNameShipping.IsValid() && isValid;
@@ -538,7 +562,7 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
             isValid = this.CreditCardNumber.IsValid() && isValid;
             isValid = this.CardHolderName.IsValid() && isValid;
             isValid = this.SecurityCode.IsValid() && isValid;
-            
+
             return isValid;
         }
 
@@ -558,9 +582,9 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
             checkoutState.BillingCompany = CompanyBilling.Value.ToString();
             checkoutState.BillingEmail = EmailBilling.Value.ToString();
 
-            
 
-            if (UseBillingAddressAsShippingAddress!= null && !UseBillingAddressAsShippingAddress.Checked)
+
+            if (UseBillingAddressAsShippingAddress != null && !UseBillingAddressAsShippingAddress.Checked)
             {
                 checkoutState.ShippingFirstName = FirstNameShipping.Value.ToString();
                 checkoutState.ShippingLastName = LastNameShipping.Value.ToString();
@@ -627,27 +651,23 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
 
         private void BindUserProfileInformation()
         {
-            SitefinityProfile sitefinityProfile = UserProfileHelper.GetSitefinityProfileOfCurrentlyLoggedInUser();
-            if (sitefinityProfile != null)
+            var userBillingAndShippingInformation = CustomerAddressHelper.GetCustomerBillingAndShippingInfo(UserProfileHelper.GetCurrentlyLoggedInUser(), this.OrdersManager, this.UserProfileManager);
+            if (userBillingAndShippingInformation != null)
             {
-                FirstNameBilling.Value = sitefinityProfile.FirstName;
-                LastNameBilling.Value = sitefinityProfile.LastName;
-                EmailBilling.Value = sitefinityProfile.User.Email;
-                CustomerProfile customerProfile = UserProfileHelper.GetCustomerProfileOfCurrentUser(UserProfileManager);
-                if (customerProfile != null)
-                {
-                    CompanyBilling.Value = customerProfile.BillingCompany;
-                    Address1Billing.Value = customerProfile.BillingAddress1;
-                    Address2Billing.Value = customerProfile.BillingAddress2;
-                    CityBilling.Value = customerProfile.BillingCity;
-                    CountryBilling.SelectedValue = customerProfile.BillingCountry;
-                    StateBilling.SelectedValue = customerProfile.BillingStateRegion;
-                    ZipBilling.Value = customerProfile.BillingPostalCode;
-                    PhoneNumberBilling.Value = customerProfile.BillingPhoneNumber;
+                FirstNameBilling.Value = userBillingAndShippingInformation.ShippingFirstName;
+                LastNameBilling.Value = userBillingAndShippingInformation.ShippingFirstName;
+                EmailBilling.Value = userBillingAndShippingInformation.ShippingEmail;
+                CompanyBilling.Value = userBillingAndShippingInformation.ShippingCompany;
+                Address1Billing.Value = userBillingAndShippingInformation.ShippingAddress1;
+                Address2Billing.Value = userBillingAndShippingInformation.ShippingAddress2;
+                CityBilling.Value = userBillingAndShippingInformation.ShippingCity;
+                CountryBilling.SelectedValue = userBillingAndShippingInformation.ShippingCountry;
+                StateBilling.SelectedValue = userBillingAndShippingInformation.ShippingState;
+                ZipBilling.Value = userBillingAndShippingInformation.ShippingZip;
+                PhoneNumberBilling.Value = userBillingAndShippingInformation.ShippingPhoneNumber;
 
-                    double totalWeight = CartHelper.GetTotalWeightOfCart(this.OrdersManager, this.GetShoppingCartId());
-                    this.ShippingInfo = new ShippingInfo { ShippingToCountry = customerProfile.ShippingCountry, ShippingToZip = customerProfile.ShippingPostalCode, TotalCartWeight = totalWeight };
-                }
+                double totalWeight = CartHelper.GetTotalWeightOfCart(this.OrdersManager, this.GetShoppingCartId());
+                this.ShippingInfo = new ShippingInfo { ShippingToCountry = userBillingAndShippingInformation.ShippingCountry, ShippingToZip = userBillingAndShippingInformation.ShippingZip, TotalCartWeight = totalWeight };
             }
         }
 
@@ -673,7 +693,7 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
 
         private void BindShippingMethods(RadioButtonList shippingMethodsList)
         {
-            shippingMethodsList.DataSource = ShippingRateHelper.GetShippingRates(this.ShippingManager, this.OrdersManager, this.GetShoppingCartId(),this.ShippingInfo);
+            shippingMethodsList.DataSource = ShippingRateHelper.GetShippingRates(this.ShippingManager, this.OrdersManager, this.GetShoppingCartId(), this.ShippingInfo);
             shippingMethodsList.DataBind();
         }
 
