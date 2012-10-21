@@ -674,16 +674,6 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
         private void BindPreviewGrid(RadGrid shoppingCartGrid)
         {
             shoppingCartGrid.NeedDataSource += new Telerik.Web.UI.GridNeedDataSourceEventHandler(ShoppingCartGrid_NeedDataSource);
-            shoppingCartGrid.ItemDataBound += new GridItemEventHandler(ShoppingCartGrid_ItemDataBound);
-        }
-
-        protected virtual void ShoppingCartGrid_ItemDataBound(object sender, GridItemEventArgs e)
-        {
-            if (e.Item.ItemType == GridItemType.Item || e.Item.ItemType == GridItemType.AlternatingItem)
-            {
-                var gridItem = e.Item as GridDataItem;
-                gridItem["ProductPriceTotal"].Text = this.ToCurrencyString(double.Parse(gridItem["ProductPriceTotal"].Text));
-            }
         }
 
         protected void ShoppingCartGrid_NeedDataSource(object sender, Telerik.Web.UI.GridNeedDataSourceEventArgs e)
