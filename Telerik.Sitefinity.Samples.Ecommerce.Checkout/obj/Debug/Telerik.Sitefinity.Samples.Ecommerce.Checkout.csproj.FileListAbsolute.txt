@@ -77,3 +77,15 @@ C:\!Sitefinity\Projects\Quantum5.1 SP1 - One Page\Telerik.Sitefinity.Samples.Eco
 C:\!Sitefinity\Projects\Quantum5.1 SP1 - One Page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\ResolveAssemblyReference.cache
 C:\!Sitefinity\Projects\Quantum5.1 SP1 - One Page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.dll
 C:\!Sitefinity\Projects\Quantum5.1 SP1 - One Page\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.pdb
+C:\!Sitefinity\Quantum52 - OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.dll
+C:\!Sitefinity\Quantum52 - OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.pdb
+C:\!Sitefinity\Quantum52 - OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.OpenAccess.dll
+C:\!Sitefinity\Quantum52 - OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.dll
+C:\!Sitefinity\Quantum52 - OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Ecommerce.dll
+C:\!Sitefinity\Quantum52 - OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Model.dll
+C:\!Sitefinity\Quantum52 - OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Web.UI.dll
+C:\!Sitefinity\Quantum52 - OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Windows.RadUploadHandler.dll
+C:\!Sitefinity\Quantum52 - OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Windows.RadUploadHandler.pdb
+C:\!Sitefinity\Quantum52 - OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.csprojResolveAssemblyReference.cache
+C:\!Sitefinity\Quantum52 - OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.dll
+C:\!Sitefinity\Quantum52 - OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.pdb

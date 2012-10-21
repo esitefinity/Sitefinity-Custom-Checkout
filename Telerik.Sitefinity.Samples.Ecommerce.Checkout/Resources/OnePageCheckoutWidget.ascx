@@ -331,13 +331,14 @@
                     <telerik:GridTemplateColumn HeaderText='<%$Resources:OrdersResources, Price %>'
                         HeaderStyle-CssClass="sfSingleItmPriceCol"
                         ItemStyle-CssClass="sfSingleItmPriceCol" 
-                        UniqueName="ProductPrice"
-                        SortExpression="Total" >
+                        UniqueName="BasePrice"
+                        SortExpression="Total"
+                        >
                     <ItemTemplate>
                         <sfCatalog:DisplayPriceField id="displayPriceField" ObjectType="Cart" ObjectId='<%# Eval("Id") %>' runat="server" />
                     </ItemTemplate>
                     </telerik:GridTemplateColumn>
-                        
+                 
                     <telerik:GridBoundColumn DataField="Quantity"
                                             HeaderText='<%$Resources:OrdersResources, Quantity %>'
                                             SortExpression="Quantity" 
@@ -346,9 +347,9 @@
                                             UniqueName="ProductQuantity">
                     </telerik:GridBoundColumn>
 
-                    <telerik:GridBoundColumn DataField="DisplayTotal" 
+                    <telerik:GridBoundColumn DataField="DisplayTotalFormatted" 
                                             HeaderText='<%$Resources:OrdersResources, Subtotal %>'
-                                            SortExpression="Total" 
+                                            SortExpression="DisplayTotalFormatted" 
                                             ItemStyle-CssClass="sfItmPriceCol" 
                                             HeaderStyle-CssClass="sfItmPriceCol"
                                             UniqueName="ProductPriceTotal">
