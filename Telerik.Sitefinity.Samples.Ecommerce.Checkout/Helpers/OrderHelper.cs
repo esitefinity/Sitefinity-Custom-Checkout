@@ -15,9 +15,22 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
     {
         private static readonly object orderNumberLock = new object();
 
-        internal static Tuple<bool, IPaymentResponse> PlaceOrder(OrdersManager ordersManager, CatalogManager catalogManager, UserManager userManager, RoleManager roleManager, UserProfileManager userProfileManager, CheckoutState checkoutState, Guid cartOrderId)
+        internal static Tuple<bool, IPaymentResponse> PlaceOrder(OrdersManager ordersManager, CatalogManager catalogManager, UserManager userManager, RoleManager roleManager, UserProfileManager userProfileManager, CheckoutState checkoutState, Guid cartOrderId, string zip, decimal shipPrice)
         {
             CartOrder cartOrder = ordersManager.GetCartOrder(cartOrderId);
+
+            decimal tTotal = 0;
+            foreach (var de in cartOrder.Details)
+            {
+                de.TaxRate = CartHelper.GetTaxList(zip);
+                cartOrder.EffectiveTaxRate = de.TaxRate;
+                var priceWithTax = de.Price * de.TaxRate;
+                tTotal += priceWithTax;
+            }
+
+            cartOrder.Tax = tTotal;
+            JMABase.WriteLogFile("Ship Price: " + shipPrice, "/ecommercelog.txt");
+            cartOrder.ShippingTotal = shipPrice;
             cartOrder.Addresses.Clear();
             cartOrder.Payments.Clear();
 
@@ -76,8 +89,11 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
                 return new Tuple<bool, IPaymentResponse>(false, paymentResponse);
             }
 
+            JMABase.WriteLogFile("Order Status: " + order.OrderStatus.ToString(), "/ecommercelog.txt");
+
             if (order.OrderStatus == OrderStatus.Paid)
             {
+                JMABase.WriteLogFile("Sending email...", "/ecommercelog.txt");
                 UserProfileHelper.AssignCustomerToRoles(userManager, roleManager, catalogManager, SecurityManager.GetCurrentUserId(), order);
                 EmailHelper.SendOrderPlacedEmailToClientAndMerchant(cartOrder, checkoutState, order.OrderNumber);
             }

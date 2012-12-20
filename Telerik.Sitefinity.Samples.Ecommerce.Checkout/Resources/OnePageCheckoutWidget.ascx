@@ -7,6 +7,17 @@
 <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
 <%@ Register Assembly="Telerik.Sitefinity" Namespace="Telerik.Sitefinity.Modules.Ecommerce.Catalog.Web.UI.Fields"
     TagPrefix="sfCatalog" %>
+<script runat="server">
+
+    protected void btnShowCart_Click(object sender, EventArgs e)
+    {
+
+    }
+</script>
+
+
+<sitefinity:FormManager ID="formManager" runat="server" />
+
 <sf:ResourceLinks id="resourcesLinks" runat="server">
     <sf:ResourceFile JavaScriptLibrary="JQuery" />
     <sf:ResourceFile Name="CheckoutStyles.css" />
@@ -18,7 +29,7 @@
     <sf:Message runat="server" ID="message" ElementTag="div" FadeDuration="10" />
 </asp:Panel>
 <div id="widget" runat="server">
-    <fieldset id="billingForm" class="sfcheckoutBillingFormWrp sfcheckoutFormWrp" runat="server"
+<fieldset id="billingForm" class="sfcheckoutBillingFormWrp sfcheckoutFormWrp" runat="server"
         >
         <h2 class="sfcheckoutStepTitle">
             <asp:Literal ID="Literal1" runat="server" Text='<%$Resources:OrdersResources, BillingAddress %>' />
@@ -79,7 +90,7 @@
                             Title='<%$Resources:OrdersResources, City %>'>
                         </sitefinity:TextField>
                     </div>
-                    <div class="rightcolumn">
+                    <div class="rightcolumn"  style="display:none;">
                         <asp:Label ID="Label2" runat="server" Text='<%$Resources:OrdersResources, Country %>'
                             AssociatedControlID="countryBilling" CssClass="sfTxtLbl" />
                         <telerik:RadComboBox id="countryBilling" runat="server" CssClass="sfRequired sfCountryBilling"
@@ -218,9 +229,18 @@
         <h2 class="sfcheckoutStepTitle">
             <asp:Literal ID="Literal2" runat="server" Text='<%$Resources:OrdersResources, ShippingOptions %>' />
         </h2>
-        <asp:RadioButtonList ID="shippingMethodsList" runat="server" DataTextField="ServiceName"
-            DataValueField="ServicePrice" CssClass="sfcheckoutFormItmCheckboxList" RepeatLayout="OrderedList" />
+        <asp:RadioButtonList ID="shippingMethodsList" runat="server" DataTextField="Title"
+            DataValueField="ShippingPrice" CssClass="sfcheckoutFormItmCheckboxList" RepeatLayout="OrderedList" />
     </fieldset>
+     <fieldset>
+           <ul>
+
+               <li><asp:Button ID="btnShowCart" runat="server" Text="Next" /></li>
+           </ul>
+
+       </fieldset>       
+    <asp:Panel ID="pnlGrid" runat="server" Visible="false">
+
     <fieldset id="paymentOptionsForm" class="sfcheckoutShippingFormWrp sfcheckoutFormWrp"
         runat="server">
         <h2 class="sfcheckoutStepTitle">
@@ -304,12 +324,14 @@
                 </sitefinity:TextField>
             </li>
         </ul>
-    </fieldset>
+       
+    </fieldset> 
+   
     <fieldset id="previewForm" class="sfcheckoutShippingFormWrp sfcheckoutFormWrp" runat="server">
         <h2 class="sfcheckoutStepTitle">
             <asp:Literal ID="Literal4" runat="server" Text='Preview' />
         </h2>
-        <telerik:RadGrid id="shoppingCartGrid" runat="server" Skin="Basic" EnableEmbeddedBaseStylesheet="false"
+         <telerik:RadGrid id="shoppingCartGrid" runat="server" Skin="Basic" EnableEmbeddedBaseStylesheet="false"
             EnableEmbeddedSkins="false">
             <MasterTableView autogeneratecolumns="false">
             <Columns>
@@ -328,7 +350,7 @@
                             </div>
                         </ItemTemplate>
                     </telerik:GridTemplateColumn> 
-                    <telerik:GridTemplateColumn HeaderText='<%$Resources:OrdersResources, Price %>'
+                   <%-- <telerik:GridTemplateColumn HeaderText='<%$Resources:OrdersResources, Price %>'
                         HeaderStyle-CssClass="sfSingleItmPriceCol"
                         ItemStyle-CssClass="sfSingleItmPriceCol" 
                         UniqueName="BasePrice"
@@ -337,7 +359,16 @@
                     <ItemTemplate>
                         <sfCatalog:DisplayPriceField id="displayPriceField" ObjectType="Cart" ObjectId='<%# Eval("Id") %>' runat="server" />
                     </ItemTemplate>
-                    </telerik:GridTemplateColumn>
+                    </telerik:GridTemplateColumn>--%>
+
+                
+                <telerik:GridBoundColumn DataField="Price" 
+                                            HeaderText='Price'
+                                            DataFormatString="{0:C}"
+                                            ItemStyle-CssClass="sfItmPriceCol" 
+                                            HeaderStyle-CssClass="sfItmPriceCol"
+                                            UniqueName="DisplayTotalTax">
+                    </telerik:GridBoundColumn>
                  
                     <telerik:GridBoundColumn DataField="Quantity"
                                             HeaderText='<%$Resources:OrdersResources, Quantity %>'
@@ -347,19 +378,37 @@
                                             UniqueName="ProductQuantity">
                     </telerik:GridBoundColumn>
 
-                    <telerik:GridBoundColumn DataField="DisplayTotalFormatted" 
+                    <telerik:GridBoundColumn DataField="DisplayTotal" 
                                             HeaderText='<%$Resources:OrdersResources, Subtotal %>'
-                                            SortExpression="DisplayTotalFormatted" 
+                                            SortExpression="DisplayTotal"
+                                            DataFormatString="{0:C}" 
                                             ItemStyle-CssClass="sfItmPriceCol" 
                                             HeaderStyle-CssClass="sfItmPriceCol"
                                             UniqueName="ProductPriceTotal">
                     </telerik:GridBoundColumn>
+
+
+                <telerik:GridBoundColumn DataField="TaxRate" 
+                                            HeaderText='Tax Rate'
+                                            DataFormatString="{0:P}"
+                                            ItemStyle-CssClass="sfItmPriceCol" 
+                                            HeaderStyle-CssClass="sfItmPriceCol"
+                                            UniqueName="DisplayTotalTax">
+                    </telerik:GridBoundColumn>
+
                 </Columns>
         </MasterTableView>
         </telerik:RadGrid>
+        <div class="sfTotalRowWrp">
+            <asp:Label ID="lblProductTotalQuantity" runat="server" />
+            <asp:Label ID="lblSubtotal" runat="server" class="sfTxtLbl" />
+            <strong class="sfPriceTotal">
+                <asp:Label ID="lblAfterDiscountPrice" runat="server" /></strong>
+        </div>
     </fieldset>
     <div id="placeOrder" class="sfcheckoutFormItm" runat="server">
         <asp:Button ID="placeOrderButton" runat="server" Text='<%$Resources:OrdersResources, PlaceThisOrder %>'
             CssClass="sfcheckoutContinueBtn" />
     </div>
+        </asp:Panel>
 </div>

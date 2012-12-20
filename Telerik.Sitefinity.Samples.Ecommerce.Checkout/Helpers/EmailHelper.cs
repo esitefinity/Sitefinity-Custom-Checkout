@@ -22,8 +22,11 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
             var messageBody = GetEmailMessageBody(cartOrder, checkoutState);
             if (string.IsNullOrEmpty(messageBody))
             {
+                JMABase.WriteLogFile("Cannot send an email because there is no message body", "/ecommercelog.txt");
                 return;
             }
+
+            JMABase.WriteLogFile("Message Body for email: " + messageBody, "/ecommercelog.txt");
 
             string fromAddress = Config.Get<EcommerceConfig>().MerchantEmail;
             string subject = String.Format(Res.Get<OrdersResources>("OrderEmailSubject"), orderNumber);
@@ -35,12 +38,15 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
             Guid templateId = new Guid("f949cccb-c337-4d0e-ad1e-f35a466b01e8");
             ControlPresentation emailTemplate;
 
-            using (var pageManager = PageManager.GetManager())
-            {
+            var pageManager = PageManager.GetManager();
+            //using (var pageManager = PageManager.GetManager())
+            //{
                 IQueryable<ControlPresentation> controlPresentations = pageManager.GetPresentationItems<ControlPresentation>();
 
-                emailTemplate = controlPresentations.Where(tmpl => tmpl.Id == templateId).SingleOrDefault();
-            }
+                //emailTemplate = controlPresentations.Where(tmpl => tmpl.Id == templateId).SingleOrDefault();
+                emailTemplate = controlPresentations.Where(a => a.Name == "Order Placed Client email").SingleOrDefault();
+
+            //}
 
             return emailTemplate != null ? ReplaceValuesInTemplate(emailTemplate.Data, checkoutSate, cartOrder) : "";
         }
