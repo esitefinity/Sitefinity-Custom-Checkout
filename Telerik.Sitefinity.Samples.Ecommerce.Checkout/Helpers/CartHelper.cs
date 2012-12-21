@@ -26,9 +26,14 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
                         order.EffectiveTaxRate = de.TaxRate;
                         var priceWithTax = de.Price * de.TaxRate;
                         tTotal += priceWithTax;
+                        
                     }
                 }
 
+                if (order.Details.Count() > 0)
+                {
+                    order.ShippingTaxRate = order.Details[0].TaxRate;
+                }
                 order.Tax = tTotal;
 
 

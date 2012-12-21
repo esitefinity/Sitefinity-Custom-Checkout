@@ -26,11 +26,16 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
                 cartOrder.EffectiveTaxRate = de.TaxRate;
                 var priceWithTax = de.Price * de.TaxRate;
                 tTotal += priceWithTax;
+                string s = String.Format("Tax Rate {0} Price {1} Total {2} Zip {3}", de.TaxRate, de.Price, tTotal, zip);
+                JMABase.WriteLogFile(s, "/ecommercelog.txt");
             }
 
+            cartOrder.ShippingTaxRate = cartOrder.Details[0].TaxRate;
+            cartOrder.ShippingTax = shipPrice * cartOrder.ShippingTaxRate;
+            cartOrder.ShippingTotal = shipPrice + cartOrder.ShippingTax;
             cartOrder.Tax = tTotal;
+            cartOrder.Total = cartOrder.ShippingTotal + cartOrder.Tax + cartOrder.Total;
             JMABase.WriteLogFile("Ship Price: " + shipPrice, "/ecommercelog.txt");
-            cartOrder.ShippingTotal = shipPrice;
             cartOrder.Addresses.Clear();
             cartOrder.Payments.Clear();
 
@@ -89,11 +94,11 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
                 return new Tuple<bool, IPaymentResponse>(false, paymentResponse);
             }
 
-            JMABase.WriteLogFile("Order Status: " + order.OrderStatus.ToString(), "/ecommercelog.txt");
+            //JMABase.WriteLogFile("Order Status: " + order.OrderStatus.ToString(), "/ecommercelog.txt");
 
             if (order.OrderStatus == OrderStatus.Paid)
             {
-                JMABase.WriteLogFile("Sending email...", "/ecommercelog.txt");
+                //JMABase.WriteLogFile("Sending email...", "/ecommercelog.txt");
                 UserProfileHelper.AssignCustomerToRoles(userManager, roleManager, catalogManager, SecurityManager.GetCurrentUserId(), order);
                 EmailHelper.SendOrderPlacedEmailToClientAndMerchant(cartOrder, checkoutState, order.OrderNumber);
             }

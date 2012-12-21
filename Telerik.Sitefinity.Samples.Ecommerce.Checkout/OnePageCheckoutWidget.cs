@@ -424,11 +424,27 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
             }
         }
 
+        protected virtual PlaceHolder plBack
+        {
+            get
+            {
+                return this.Container.GetControl<PlaceHolder>("plBack", false);
+            }
+        }
+
         protected virtual Button btnShowCart
         {
             get
             {
                 return this.Container.GetControl<Button>("btnShowCart", true);
+            }
+        }
+
+        protected virtual Button btnShowBilling
+        {
+            get
+            {
+                return this.Container.GetControl<Button>("btnShowBilling", true);
             }
         }
 
@@ -520,10 +536,14 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
         private void btnShowCart_Click(object sender, EventArgs e)
         {
             pnlGrid.Visible = true;
+            UseBillingAddressAsShippingAddressPanel.Visible = false;
             //Customer customer = UserProfileHelper.GetCustomerInfoOrCreateOneIfDoesntExsist(userProfileManager,ordersManager, GetCheckoutState());
             //CustomerAddressHelper.SaveCustomerAddressOfCurrentUser(GetCheckoutState(), customer);
             ShoppingCartGrid.Rebind();
             btnShowCart.Visible = false;
+            plBack.Visible = true;
+            BillingForm.Style.Add("display", "none");
+            ShippingForm.Style.Add("display", "none");
         }
 
 
@@ -552,7 +572,7 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
             }
             else if (UserProfileHelper.GetCurrentUserId() == Guid.Empty)
             {
-                return ShowErrorMessageAndHidePanels("You have to login to use checkout");
+                return ShowErrorMessageAndHidePanels("You have to <a href='https://organizedliving.com/home/member-login-checkout'>login to use</a> checkout");
             }
             return true;
         }
@@ -580,7 +600,14 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
                     }
                 }
 
-                Tuple<bool, IPaymentResponse> orderStatusInfo = OrderHelper.PlaceOrder(this.OrdersManager, this.CatalogManager, this.UserManager, this.RoleManager, this.UserProfileManager, checkoutState, cartId, ZipBilling.Value.ToString(), sPrice);
+                string zip = ZipBilling.Value.ToString();
+
+                //if (ZipShipping.Value != null)
+                //{
+                //    zip = ZipShipping.Value.ToString();
+                //}
+
+                Tuple<bool, IPaymentResponse> orderStatusInfo = OrderHelper.PlaceOrder(this.OrdersManager, this.CatalogManager, this.UserManager, this.RoleManager, this.UserProfileManager, checkoutState, cartId, zip, sPrice);
 
                 if (!orderStatusInfo.Item1)
                 {
@@ -716,6 +743,12 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
         {
             this.PlaceOrderButton.Click += this.PlaceOrderButton_Click;
             this.btnShowCart.Click += this.btnShowCart_Click;
+            this.btnShowBilling.Click += btnShowBilling_Click;
+        }
+
+        void btnShowBilling_Click(object sender, EventArgs e)
+        {
+            HttpContext.Current.Response.Redirect(HttpContext.Current.Request.RawUrl);
         }
 
         private void BindUserProfileInformation()

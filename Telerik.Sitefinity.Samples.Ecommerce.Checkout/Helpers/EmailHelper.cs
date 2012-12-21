@@ -22,11 +22,11 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
             var messageBody = GetEmailMessageBody(cartOrder, checkoutState);
             if (string.IsNullOrEmpty(messageBody))
             {
-                JMABase.WriteLogFile("Cannot send an email because there is no message body", "/ecommercelog.txt");
+                //JMABase.WriteLogFile("Cannot send an email because there is no message body", "/ecommercelog.txt");
                 return;
             }
 
-            JMABase.WriteLogFile("Message Body for email: " + messageBody, "/ecommercelog.txt");
+            //JMABase.WriteLogFile("Message Body for email: " + messageBody, "/ecommercelog.txt");
 
             string fromAddress = Config.Get<EcommerceConfig>().MerchantEmail;
             string subject = String.Format(Res.Get<OrdersResources>("OrderEmailSubject"), orderNumber);
