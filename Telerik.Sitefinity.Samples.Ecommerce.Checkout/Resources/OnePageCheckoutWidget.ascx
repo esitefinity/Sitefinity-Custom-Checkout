@@ -8,8 +8,6 @@
 <%@ Register Assembly="Telerik.Sitefinity" Namespace="Telerik.Sitefinity.Modules.Ecommerce.Catalog.Web.UI.Fields"
     TagPrefix="sfCatalog" %>
 
-
-
 <sitefinity:FormManager ID="formManager" runat="server" />
 
 <sf:ResourceLinks id="resourcesLinks" runat="server">
@@ -30,7 +28,7 @@
             <ul>
 
                 <li>
-                    <asp:Button ID="btnShowBilling" runat="server" Text="Back" /></li>
+                    <asp:Button ID="btnShowBilling" runat="server" Text="Back" CssClass="next" /></li>
             </ul>
 
         </fieldset>
@@ -244,7 +242,7 @@
             <ul>
 
                 <li>
-                    <asp:Button ID="btnShowCart" runat="server" Text="Next" onclick="RefreshGrid()" /></li>
+                    <asp:Button ID="btnShowCart" runat="server" Text="Next" onclick="RefreshGrid()" CssClass="next"/></li>
             </ul>
 
         </fieldset>
@@ -420,7 +418,7 @@
         </fieldset>
         <div id="placeOrder" class="sfcheckoutFormItm" runat="server">
             <asp:Button ID="placeOrderButton" runat="server" Text='<%$Resources:OrdersResources, PlaceThisOrder %>'
-                CssClass="sfcheckoutContinueBtn" />
+                CssClass="next" />
         </div>
     </asp:Panel>
 </div>

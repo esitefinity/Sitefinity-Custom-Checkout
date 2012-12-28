@@ -32,11 +32,25 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
     public class OnePageCheckoutWidget : SimpleScriptView, IOrdersControl, IEcommerceControl
     {
 
+        //to use the compiled version, uncomment this code. Comment layout template path
+
         protected override string LayoutTemplateName
         {
             get
             {
                 return OnePageCheckoutWidget.layoutTemplateName;
+            }
+        }
+
+        public override string LayoutTemplatePath
+        {
+            get
+            {
+                return base.LayoutTemplatePath;
+            }
+            set
+            {
+                base.LayoutTemplatePath = value;
             }
         }
 
@@ -858,6 +872,7 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
         }
 
         private static readonly string layoutTemplateName = "Telerik.Sitefinity.Samples.Ecommerce.Checkout.Resources.OnePageCheckoutWidget.ascx";
+        private static readonly string layoutTemplatePath = "~/UserControls/CustomECommerce/OnePageCheckoutWidget.ascx";
         private static readonly string onePageCheckoutWidgetScripts = "Telerik.Sitefinity.Samples.Ecommerce.Checkout.Resources.OnePageCheckoutWidget.js";
 
         private CatalogManager catalogManager;

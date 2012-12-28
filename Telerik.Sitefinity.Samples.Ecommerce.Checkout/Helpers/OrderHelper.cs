@@ -34,8 +34,9 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
             cartOrder.ShippingTax = shipPrice * cartOrder.ShippingTaxRate;
             cartOrder.ShippingTotal = shipPrice + cartOrder.ShippingTax;
             cartOrder.Tax = tTotal;
+            string aa = String.Format("Ship Tax Rate {0} Items Tax {1} Total of Items {2} Ship Total {3} SubTotal", cartOrder.ShippingTaxRate, cartOrder.Tax, cartOrder.Total, cartOrder.ShippingTotal, cartOrder.SubTotalDisplay);
+            JMABase.WriteLogFile(aa, "/ecommercelog.txt");
             cartOrder.Total = cartOrder.ShippingTotal + cartOrder.Tax + cartOrder.Total;
-            JMABase.WriteLogFile("Ship Price: " + shipPrice, "/ecommercelog.txt");
             cartOrder.Addresses.Clear();
             cartOrder.Payments.Clear();
 

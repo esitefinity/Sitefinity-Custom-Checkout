@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using Telerik.Sitefinity.Data;
 using Telerik.Sitefinity.Ecommerce.Orders.Model;
 using Telerik.Sitefinity.Modules.Ecommerce.Catalog;
@@ -39,7 +40,15 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
 
         internal static Guid GetCurrentUserId()
         {
-            return SecurityManager.GetCurrentUserId();
+            UserManager um = UserManager.GetManager();
+            User u = um.GetUser(HttpContext.Current.User.Identity.Name);
+            if (u == null)
+            {
+                return Guid.Empty;
+            }
+
+            return u.Id;
+            //return SecurityManager.GetCurrentUserId();
         }
 
         internal static User GetCurrentlyLoggedInUser()
