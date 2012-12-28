@@ -89,3 +89,31 @@ C:\!Sitefinity\Quantum52 - OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout
 C:\!Sitefinity\Quantum52 - OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.csprojResolveAssemblyReference.cache
 C:\!Sitefinity\Quantum52 - OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.dll
 C:\!Sitefinity\Quantum52 - OnePage\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.pdb
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.pdb
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Ecommerce.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Model.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Web.UI.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Utilities.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.OpenAccess.35.Extensions.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Microsoft.Http.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.OpenAccess.Web.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Windows.RadUploadHandler.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Services.Notifications.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\DocumentFormat.OpenXml.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Services.Documents.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Microsoft.WindowsAzure.StorageClient.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Twitterizer2.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Sitefinity.Search.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\AjaxControlToolkit.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Microsoft.WindowsAzure.Diagnostics.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\DirectShowLib-2005.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.Reporting.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Telerik.ReportViewer.WebForms.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Payflow_dotNET.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\bin\Debug\Newtonsoft.Json.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.csprojResolveAssemblyReference.cache
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.dll
+C:\Users\joe_a84\Documents\GitHub\Sitefinity-Custom-Checkout\Telerik.Sitefinity.Samples.Ecommerce.Checkout\obj\Debug\Telerik.Sitefinity.Samples.Ecommerce.Checkout.pdb

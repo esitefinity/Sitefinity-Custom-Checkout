@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Configuration;
+using System.Data;
+using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Linq;
 using Telerik.Sitefinity.Ecommerce.Orders.Model;
 using Telerik.Sitefinity.Modules.Ecommerce.Orders;
@@ -10,7 +14,79 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
     {
         internal static CartOrder GetCartOrder(OrdersManager ordersManager, Guid shoppingCartId)
         {
-            return ordersManager.GetCart(shoppingCartId);
+            try
+            {
+                CartOrder order = ordersManager.GetCartOrder(shoppingCartId);
+                decimal tTotal = 0;
+                foreach (CartDetail de in order.Details)
+                {
+                    if (order.Addresses.Count() > 0)
+                    {
+                        de.TaxRate = GetTaxList(order.Addresses[0].PostalCode);
+                        order.EffectiveTaxRate = de.TaxRate;
+                        var priceWithTax = de.Price * de.TaxRate;
+                        tTotal += priceWithTax;
+                        
+                    }
+                }
+
+                if (order.Details.Count() > 0)
+                {
+                    order.ShippingTaxRate = order.Details[0].TaxRate;
+                }
+                order.Tax = tTotal;
+
+
+                return order;
+            }
+            catch (Exception)
+            {
+                return new CartOrder();
+            }
+        }
+
+        internal static CartOrder GetCartOrder(OrdersManager ordersManager, Guid shoppingCartId, string zip)
+        {
+            CartOrder order = ordersManager.GetCartOrder(shoppingCartId);
+            foreach (CartDetail de in order.Details)
+            {
+                if (!String.IsNullOrEmpty(zip))
+                {
+                    de.TaxRate = GetTaxList(zip);
+                }
+                else
+                {
+                    if (order.Addresses.Count() > 0)
+                    {
+                        de.TaxRate = GetTaxList(order.Addresses[0].PostalCode);
+                    }
+                }
+            }
+            return order;
+        }
+
+
+
+        public static decimal GetTaxList(string zip)
+        {
+            if (zip.Length > 5)
+            {
+                zip = zip.Substring(0, 5);
+            }
+            decimal rate = 0;
+            string SqlStatement = String.Format("SELECT * FROM taxbyzip where tax_sched = '{0}'", zip);
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["Tax"].ConnectionString);
+            DataSet dt = new DataSet();
+            SqlDataAdapter sQLDA;
+            sQLDA = new SqlDataAdapter(SqlStatement, con);
+            sQLDA.Fill(dt);
+
+            foreach (DataRow dr in dt.Tables[0].Rows)
+            {
+                rate = Convert.ToDecimal(dr["tax_cd"]) / 100;
+            }
+
+            return rate;
         }
 
         internal static CartAddress GetShippingAddressFromCheckoutState(OrdersManager ordersManager, CheckoutState checkoutState)

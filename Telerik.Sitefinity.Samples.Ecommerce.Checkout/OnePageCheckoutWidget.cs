@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Telerik.Sitefinity.Ecommerce.Orders.Model;
 using Telerik.Sitefinity.Ecommerce.Payment.Model;
+using Telerik.Sitefinity.Ecommerce.Shipping.Model;
 using Telerik.Sitefinity.Modules.Ecommerce;
 using Telerik.Sitefinity.Modules.Ecommerce.Catalog;
 using Telerik.Sitefinity.Modules.Ecommerce.Configuration;
@@ -29,11 +32,25 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
     public class OnePageCheckoutWidget : SimpleScriptView, IOrdersControl, IEcommerceControl
     {
 
+        //to use the compiled version, uncomment this code. Comment layout template path
+
         protected override string LayoutTemplateName
         {
             get
             {
                 return OnePageCheckoutWidget.layoutTemplateName;
+            }
+        }
+
+        public override string LayoutTemplatePath
+        {
+            get
+            {
+                return base.LayoutTemplatePath;
+            }
+            set
+            {
+                base.LayoutTemplatePath = value;
             }
         }
 
@@ -389,6 +406,62 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
             }
         }
 
+        protected virtual Label lblProductTotalQuantity
+        {
+            get
+            {
+                return this.Container.GetControl<Label>("lblProductTotalQuantity", true);
+            }
+        }
+
+        protected virtual Label lblSubtotal
+        {
+            get
+            {
+                return this.Container.GetControl<Label>("lblSubtotal", true);
+            }
+        }
+
+        protected virtual Label lblAfterDiscountPrice
+        {
+            get
+            {
+                return this.Container.GetControl<Label>("lblAfterDiscountPrice", true);
+            }
+        }
+
+        protected virtual Panel pnlGrid
+        {
+            get
+            {
+                return this.Container.GetControl<Panel>("pnlGrid", true);
+            }
+        }
+
+        protected virtual PlaceHolder plBack
+        {
+            get
+            {
+                return this.Container.GetControl<PlaceHolder>("plBack", false);
+            }
+        }
+
+        protected virtual Button btnShowCart
+        {
+            get
+            {
+                return this.Container.GetControl<Button>("btnShowCart", true);
+            }
+        }
+
+        protected virtual Button btnShowBilling
+        {
+            get
+            {
+                return this.Container.GetControl<Button>("btnShowBilling", true);
+            }
+        }
+
         protected OrdersManager OrdersManager
         {
             get
@@ -470,7 +543,23 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
                 BindPreviewGrid(ShoppingCartGrid);
                 AttachPlacerOrderButtonEvent();
             }
+
+            
         }
+
+        private void btnShowCart_Click(object sender, EventArgs e)
+        {
+            pnlGrid.Visible = true;
+            UseBillingAddressAsShippingAddressPanel.Visible = false;
+            //Customer customer = UserProfileHelper.GetCustomerInfoOrCreateOneIfDoesntExsist(userProfileManager,ordersManager, GetCheckoutState());
+            //CustomerAddressHelper.SaveCustomerAddressOfCurrentUser(GetCheckoutState(), customer);
+            ShoppingCartGrid.Rebind();
+            btnShowCart.Visible = false;
+            plBack.Visible = true;
+            BillingForm.Style.Add("display", "none");
+            ShippingForm.Style.Add("display", "none");
+        }
+
 
         private void HideShippingRelatedInfoIfCartDoesntHaveShippableItems()
         {
@@ -497,7 +586,7 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
             }
             else if (UserProfileHelper.GetCurrentUserId() == Guid.Empty)
             {
-                return ShowErrorMessageAndHidePanels("You have to login to use checkout");
+                return ShowErrorMessageAndHidePanels("You have to <a href='https://organizedliving.com/home/member-login-checkout'>login to use</a> checkout");
             }
             return true;
         }
@@ -515,7 +604,24 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
             {
                 CheckoutState checkoutState = GetCheckoutState();
                 Guid cartId = this.GetShoppingCartId();
-                Tuple<bool, IPaymentResponse> orderStatusInfo = OrderHelper.PlaceOrder(this.OrdersManager, this.CatalogManager, this.UserManager, this.RoleManager, this.UserProfileManager, checkoutState, cartId);
+
+                decimal sPrice = 0;
+                foreach (ListItem a in ShippingMethodsList.Items)
+                {
+                    if (a.Selected == true)
+                    {
+                        sPrice = decimal.Parse(a.Value);
+                    }
+                }
+
+                string zip = ZipBilling.Value.ToString();
+
+                //if (ZipShipping.Value != null)
+                //{
+                //    zip = ZipShipping.Value.ToString();
+                //}
+
+                Tuple<bool, IPaymentResponse> orderStatusInfo = OrderHelper.PlaceOrder(this.OrdersManager, this.CatalogManager, this.UserManager, this.RoleManager, this.UserProfileManager, checkoutState, cartId, zip, sPrice);
 
                 if (!orderStatusInfo.Item1)
                 {
@@ -575,7 +681,8 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
             checkoutState.BillingAddress1 = Address1Billing.Value.ToString();
             checkoutState.BillingAddress2 = Address2Billing.Value.ToString();
             checkoutState.BillingCity = CityBilling.Value.ToString();
-            checkoutState.BillingCountry = CountryBilling.SelectedValue.ToString();
+            //checkoutState.BillingCountry = CountryBilling.SelectedValue.ToString();
+            checkoutState.BillingCountry = "United States";
             checkoutState.BillingState = StateBilling.SelectedValue.ToString();
             checkoutState.BillingZip = ZipBilling.Value.ToString();
             checkoutState.BillingPhoneNumber = PhoneNumberBilling.Value.ToString();
@@ -591,7 +698,8 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
                 checkoutState.ShippingAddress1 = Address1Shipping.Value.ToString();
                 checkoutState.ShippingAddress2 = Util.GetSafeString(Address2Shipping.Value);
                 checkoutState.ShippingCity = CityShipping.Value.ToString();
-                checkoutState.ShippingCountry = CountryShipping.SelectedValue.ToString();
+                //checkoutState.ShippingCountry = CountryShipping.SelectedValue.ToString();
+                checkoutState.ShippingCountry = "United States";
                 checkoutState.ShippingState = StateShipping.SelectedValue.ToString();
                 checkoutState.ShippingZip = ZipShipping.Value.ToString();
                 checkoutState.ShippingPhoneNumber = Util.GetSafeString(PhoneNumberShipping.Value);
@@ -605,7 +713,8 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
                 checkoutState.ShippingAddress1 = Address1Billing.Value.ToString();
                 checkoutState.ShippingAddress2 = Util.GetSafeString(Address2Billing.Value);
                 checkoutState.ShippingCity = CityBilling.Value.ToString();
-                checkoutState.ShippingCountry = CountryBilling.SelectedValue.ToString();
+                //checkoutState.ShippingCountry = CountryBilling.SelectedValue.ToString();
+                checkoutState.ShippingCountry = "United States";
                 checkoutState.ShippingState = StateBilling.SelectedValue.ToString();
                 checkoutState.ShippingZip = ZipBilling.Value.ToString();
                 checkoutState.ShippingPhoneNumber = Util.GetSafeString(PhoneNumberBilling.Value);
@@ -647,27 +756,37 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
         private void AttachPlacerOrderButtonEvent()
         {
             this.PlaceOrderButton.Click += this.PlaceOrderButton_Click;
+            this.btnShowCart.Click += this.btnShowCart_Click;
+            this.btnShowBilling.Click += btnShowBilling_Click;
+        }
+
+        void btnShowBilling_Click(object sender, EventArgs e)
+        {
+            HttpContext.Current.Response.Redirect(HttpContext.Current.Request.RawUrl);
         }
 
         private void BindUserProfileInformation()
         {
-            var userBillingAndShippingInformation = CustomerAddressHelper.GetCustomerBillingAndShippingInfo(UserProfileHelper.GetCurrentlyLoggedInUser(), this.OrdersManager, this.UserProfileManager);
-            if (userBillingAndShippingInformation != null)
+            if (!Page.IsPostBack)
             {
-                FirstNameBilling.Value = userBillingAndShippingInformation.ShippingFirstName;
-                LastNameBilling.Value = userBillingAndShippingInformation.ShippingFirstName;
-                EmailBilling.Value = userBillingAndShippingInformation.ShippingEmail;
-                CompanyBilling.Value = userBillingAndShippingInformation.ShippingCompany;
-                Address1Billing.Value = userBillingAndShippingInformation.ShippingAddress1;
-                Address2Billing.Value = userBillingAndShippingInformation.ShippingAddress2;
-                CityBilling.Value = userBillingAndShippingInformation.ShippingCity;
-                CountryBilling.SelectedValue = userBillingAndShippingInformation.ShippingCountry;
-                StateBilling.SelectedValue = userBillingAndShippingInformation.ShippingState;
-                ZipBilling.Value = userBillingAndShippingInformation.ShippingZip;
-                PhoneNumberBilling.Value = userBillingAndShippingInformation.ShippingPhoneNumber;
+                var userBillingAndShippingInformation = CustomerAddressHelper.GetCustomerBillingAndShippingInfo(UserProfileHelper.GetCurrentlyLoggedInUser(), this.OrdersManager, this.UserProfileManager);
+                if (userBillingAndShippingInformation != null)
+                {
+                    FirstNameBilling.Value = userBillingAndShippingInformation.ShippingFirstName;
+                    LastNameBilling.Value = userBillingAndShippingInformation.BillingLastName;
+                    EmailBilling.Value = userBillingAndShippingInformation.ShippingEmail;
+                    CompanyBilling.Value = userBillingAndShippingInformation.ShippingCompany;
+                    Address1Billing.Value = userBillingAndShippingInformation.ShippingAddress1;
+                    Address2Billing.Value = userBillingAndShippingInformation.ShippingAddress2;
+                    CityBilling.Value = userBillingAndShippingInformation.ShippingCity;
+                    CountryBilling.SelectedValue = userBillingAndShippingInformation.ShippingCountry;
+                    StateBilling.SelectedValue = userBillingAndShippingInformation.ShippingState;
+                    ZipBilling.Value = userBillingAndShippingInformation.ShippingZip;
+                    PhoneNumberBilling.Value = userBillingAndShippingInformation.ShippingPhoneNumber;
 
-                double totalWeight = CartHelper.GetTotalWeightOfCart(this.OrdersManager, this.GetShoppingCartId());
-                this.ShippingInfo = new ShippingInfo { ShippingToCountry = userBillingAndShippingInformation.ShippingCountry, ShippingToZip = userBillingAndShippingInformation.ShippingZip, TotalCartWeight = totalWeight };
+                    double totalWeight = CartHelper.GetTotalWeightOfCart(this.OrdersManager, this.GetShoppingCartId());
+                    this.ShippingInfo = new ShippingInfo { ShippingToCountry = userBillingAndShippingInformation.ShippingCountry, ShippingToZip = userBillingAndShippingInformation.ShippingZip, TotalCartWeight = totalWeight };
+                }
             }
         }
 
@@ -678,13 +797,46 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
 
         protected void ShoppingCartGrid_NeedDataSource(object sender, Telerik.Web.UI.GridNeedDataSourceEventArgs e)
         {
-            ShoppingCartGrid.DataSource = CartHelper.GetCartOrder(this.OrdersManager, this.GetShoppingCartId()).Details;
+            string newzip = "";
+            object zip = ZipBilling.Value;
+            if (zip != null)
+            {
+                newzip = zip.ToString();
+            }
+            var order = CartHelper.GetCartOrder(this.OrdersManager, this.GetShoppingCartId());
+            ShoppingCartGrid.DataSource = CartHelper.GetCartOrder(this.OrdersManager, this.GetShoppingCartId(), newzip).Details;
+
+            //now assign totals at bottom
+            //lblAfterDiscountPrice.Text = String.Format("{0:C}", order.Total);
+            int totalQ = 0;
+            foreach (var a in order.Details)
+            {
+                totalQ += a.Quantity;
+            }
+            lblProductTotalQuantity.Text = String.Format("{0} products Subtotal", totalQ);
+            lblSubtotal.Text = String.Format("{0:C}", order.SubTotalDisplay);
+
         }
 
         private void BindShippingMethods(RadioButtonList shippingMethodsList)
         {
-            shippingMethodsList.DataSource = ShippingRateHelper.GetShippingRates(this.ShippingManager, this.OrdersManager, this.GetShoppingCartId(), this.ShippingInfo);
-            shippingMethodsList.DataBind();
+                //shippingMethodsList.DataSource = ShippingRateHelper.GetShippingRates(this.ShippingManager, this.OrdersManager, this.GetShoppingCartId(), this.ShippingInfo);
+                var ds = ShippingRateHelper.GetShippingRates(this.ShippingManager, this.OrdersManager, this.GetShoppingCartId(), this.ShippingInfo) as List<ShippingMethod>;
+                if (shippingMethodsList.Items.Count == 0)
+                {
+                    foreach (var item in ds)
+                    {
+                        //totalPrice|30|49.99|9
+                        decimal price = decimal.Parse(item.ShippingPrice.Split('|')[3]);
+                        ListItem li = new ListItem();
+                        li.Value = price.ToString();
+                        li.Text = item.Title + " " + String.Format("{0:C}", price);
+                        shippingMethodsList.Items.Add(li);
+                    }
+
+                    shippingMethodsList.Items[0].Selected = true;
+                }
+            //shippingMethodsList.DataBind();
         }
 
         private void BindStateDropDown(RadComboBox stateRadComboBox)
@@ -720,6 +872,7 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
         }
 
         private static readonly string layoutTemplateName = "Telerik.Sitefinity.Samples.Ecommerce.Checkout.Resources.OnePageCheckoutWidget.ascx";
+        private static readonly string layoutTemplatePath = "~/UserControls/CustomECommerce/OnePageCheckoutWidget.ascx";
         private static readonly string onePageCheckoutWidgetScripts = "Telerik.Sitefinity.Samples.Ecommerce.Checkout.Resources.OnePageCheckoutWidget.js";
 
         private CatalogManager catalogManager;
