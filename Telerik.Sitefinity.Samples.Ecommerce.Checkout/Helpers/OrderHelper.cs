@@ -15,7 +15,7 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
     {
         private static readonly object orderNumberLock = new object();
 
-        internal static Tuple<bool, IPaymentResponse> PlaceOrder(OrdersManager ordersManager, CatalogManager catalogManager, UserManager userManager, RoleManager roleManager, UserProfileManager userProfileManager, CheckoutState checkoutState, Guid cartOrderId)
+        internal static IPaymentResponse PlaceOrder(OrdersManager ordersManager, CatalogManager catalogManager, UserManager userManager, RoleManager roleManager, UserProfileManager userProfileManager, CheckoutState checkoutState, Guid cartOrderId)
         {
             CartOrder cartOrder = ordersManager.GetCartOrder(cartOrderId);
             cartOrder.Addresses.Clear();
@@ -47,11 +47,11 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
 
             // Get current customer or create new one
 
-            Customer customer = UserProfileHelper.GetCustomerInfoOrCreateOneIfDoesntExsist(userProfileManager,ordersManager, checkoutState);
+            Customer customer = UserProfileHelper.GetCustomerInfoOrCreateOneIfDoesntExsist(userProfileManager, ordersManager, checkoutState);
 
             // Save the customer address
             CustomerAddressHelper.SaveCustomerAddressOfCurrentUser(checkoutState, customer);
-            
+
             //Use the API to checkout
             IPaymentResponse paymentResponse = ordersManager.Checkout(cartOrderId, checkoutState, customer);
 
@@ -59,7 +59,7 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
             checkoutState.IsPaymentSuccessful = paymentResponse.IsSuccess;
 
             Order order = ordersManager.GetOrder(cartOrderId);
-            
+
             //Increment the order
             IncrementOrderNumber(ordersManager, order);
 
@@ -68,13 +68,8 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
 
             // Update the order
             order.Customer = customer;
-           
-            ordersManager.SaveChanges();
 
-            if (!paymentResponse.IsSuccess)
-            {
-                return new Tuple<bool, IPaymentResponse>(false, paymentResponse);
-            }
+            ordersManager.SaveChanges();
 
             if (order.OrderStatus == OrderStatus.Paid)
             {
@@ -82,7 +77,7 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout.Helpers
                 EmailHelper.SendOrderPlacedEmailToClientAndMerchant(cartOrder, checkoutState, order.OrderNumber);
             }
 
-            return new Tuple<bool, IPaymentResponse>(true, paymentResponse);
+            return paymentResponse;
         }
 
         private static void IncrementOrderNumber(OrdersManager ordersManager, Order order)
