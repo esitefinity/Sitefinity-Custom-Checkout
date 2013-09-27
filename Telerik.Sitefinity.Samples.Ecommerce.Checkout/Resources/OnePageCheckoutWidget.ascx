@@ -222,7 +222,7 @@
         </h2>
         <asp:RadioButtonList ID="shippingMethodsList" runat="server" CssClass="sfcheckoutFormItmCheckboxList" RepeatLayout="OrderedList"/>
     </fieldset>
-    <fieldset id="paymentOptionsForm" class="sfcheckoutShippingFormWrp sfcheckoutFormWrp"
+    <fieldset id="paymentOptionsForm" class="sfcheckoutPaymentFormWrp sfcheckoutFormWrp"
         runat="server">
         <h2 class="sfcheckoutStepTitle">
             <asp:Literal ID="Literal3" runat="server" Text='<%$Resources:OrdersResources, PaymentOptions %>' />
