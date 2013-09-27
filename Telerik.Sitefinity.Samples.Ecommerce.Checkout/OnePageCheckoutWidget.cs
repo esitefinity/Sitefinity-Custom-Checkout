@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Telerik.Sitefinity.Ecommerce.Orders.Model;
 using Telerik.Sitefinity.Ecommerce.Payment.Model;
+using Telerik.Sitefinity.Ecommerce.Shipping.Model;
+using Telerik.Sitefinity.Locations;
 using Telerik.Sitefinity.Modules.Ecommerce;
+using Telerik.Sitefinity.Modules.Ecommerce.BusinessServices;
 using Telerik.Sitefinity.Modules.Ecommerce.Catalog;
 using Telerik.Sitefinity.Modules.Ecommerce.Configuration;
+using Telerik.Sitefinity.Modules.Ecommerce.Configuration.Contracts;
 using Telerik.Sitefinity.Modules.Ecommerce.Orders;
 using Telerik.Sitefinity.Modules.Ecommerce.Orders.Business;
 using Telerik.Sitefinity.Modules.Ecommerce.Orders.Web.UI;
@@ -515,18 +520,20 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
             {
                 CheckoutState checkoutState = GetCheckoutState();
                 Guid cartId = this.GetShoppingCartId();
-                Tuple<bool, IPaymentResponse> orderStatusInfo = OrderHelper.PlaceOrder(this.OrdersManager, this.CatalogManager, this.UserManager, this.RoleManager, this.UserProfileManager, checkoutState, cartId);
+                IPaymentResponse response = OrderHelper.PlaceOrder(this.OrdersManager, this.CatalogManager, this.UserManager, this.RoleManager, this.UserProfileManager, checkoutState, cartId);
 
-                if (!orderStatusInfo.Item1)
+                if (!response.IsOffsitePayment)
                 {
-                    // Order was declined
-                    this.PaymentProblemPanel.Visible = true;
-                    this.MessageControl.ShowNegativeMessage(orderStatusInfo.Item2.GatewayResponse);
-                    return;
+                    if (!response.IsSuccess) // in case of unsuccessful direct payment
+                    {
+                        // Order was declined
+                        this.PaymentProblemPanel.Visible = true;
+                        this.MessageControl.ShowNegativeMessage(response.GatewayResponse);
+                        return;
+                    }
+                    CleanUp();
                 }
-
-                CleanUp();
-
+                //leave the cart for offsite payments ones a notification came it will become paid.
 
                 PageNode pageNode = App.WorkWith().Page(this.ReceiptPageId).Get();
 
@@ -622,12 +629,12 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
             checkoutState.CreditCardInfo.CreditCardSecurityCode = SecurityCode.Value.ToString();
             checkoutState.CreditCardInfo.CreditCardType = CreditCardType.Visa; //for now
 
+            //get the first payment. The example doesn't support the case with multiple payment methods.
             PaymentMethod paymentMethod = this.OrdersManager.GetPaymentMethods().Where(pm => pm.IsActive && pm.PaymentMethodType == PaymentMethodType.PaymentProcessor).First();
             if (paymentMethod == null)
             {
                 throw new ArgumentException("Please configure a payment method");
             }
-
 
             checkoutState.PaymentMethodId = paymentMethod.Id;
 
@@ -683,8 +690,69 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
 
         private void BindShippingMethods(RadioButtonList shippingMethodsList)
         {
-            shippingMethodsList.DataSource = ShippingRateHelper.GetShippingRates(this.ShippingManager, this.OrdersManager, this.GetShoppingCartId(), this.ShippingInfo);
-            shippingMethodsList.DataBind();
+            this.ShippingMethodsList.Items.Clear();
+            foreach (var shippingMethod in this.AvailableShippingMethods)
+            {
+                var servicePrice = shippingMethod.ServicePrice;
+                
+                var selectedCurrency = EcommerceSettings.Currencies.DefaultCurrency;
+                CurrencyContract selectedCurrencyElement = EcommerceSettings.Currencies.SupportedCurrencies.Values.Where(ca => ca.Name == selectedCurrency).FirstOrDefault();
+                CultureInfo cultureInfo = CultureInfo.InvariantCulture;
+                if (selectedCurrencyElement != null)
+                {
+                    cultureInfo = new CultureInfo(selectedCurrencyElement.Culture);
+                }
+                
+                var servicePriceFormatted = String.Format(cultureInfo,"{0:C}", servicePrice);
+                this.ShippingMethodsList.Items.Add(new ListItem(shippingMethod.ServiceName + "<span class='servicePrice'> " + servicePriceFormatted + "</span></b>", shippingMethod.ServiceCode));
+            }
+            this.ShippingMethodsList.SelectedIndex = 0;
+
+            shippingMethodsList.SelectedIndexChanged +=  ShippingMethodsListSelectedIndexChanged;
+        }
+
+        /// <summary>
+        /// Gets the collection of available shipping methods.
+        /// </summary>
+        private IList<IShippingResponse> AvailableShippingMethods
+        {
+            get
+            {
+                if (this.availableShippingMethods == null)
+                {
+                    CheckoutState checkoutState = new CheckoutState();
+                    checkoutState.ShippingCountry = this.ShippingInfo.ShippingToCountry;
+                    checkoutState.ShippingZip = this.ShippingInfo.ShippingToZip;
+                    checkoutState.Total = (decimal)this.ShippingInfo.TotalCartWeight;
+
+                    this.availableShippingMethods = EcommerceBusinessServicesFactory.GetShippingMethodService().GetApplicableShippingMethods(checkoutState, ordersManager.GetCartOrder(this.GetShoppingCartId())).ToList();
+                }
+                return this.availableShippingMethods;
+            }
+        }
+
+        /// <summary>
+        /// each time when the shipping method is changed populated the cart with the shipping information
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void ShippingMethodsListSelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.SelectShippingMethod(this.ShippingMethodsList.SelectedValue);
+        }
+
+        /// <summary>
+        /// populate the cart with the selected shipping method id and service code. Otherwise the validation for shipping method will fail.
+        /// </summary>
+        /// <param name="serviceCode"></param>
+        private void SelectShippingMethod(string serviceCode)
+        {
+            var shippingMethod = this.AvailableShippingMethods.Where(sm => sm.ServiceCode == serviceCode).Single();
+            var cart = CartHelper.GetCartOrder(this.OrdersManager, this.GetShoppingCartId());
+            cart.ShippingMethodId = shippingMethod.ShippingMethodId;
+            cart.ShippingServiceCode = shippingMethod.ServiceCode;
+            cart.ShippingServiceName = shippingMethod.ServiceName;
+            this.OrdersManager.SaveChanges();
         }
 
         private void BindStateDropDown(RadComboBox stateRadComboBox)
@@ -728,6 +796,8 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
         private UserProfileManager userProfileManager;
         private UserManager userManager;
         private RoleManager roleManager;
+
+        private IList<IShippingResponse> availableShippingMethods;
 
         private Guid receiptPageId;
     }

@@ -2,6 +2,7 @@
 <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
 <%@ Register Assembly="Telerik.Sitefinity" Namespace="Telerik.Sitefinity.Web.UI"
     TagPrefix="sf" %>
+<%@ Register Assembly="Telerik.Sitefinity" Namespace="Telerik.Sitefinity.Web.UI.FieldControls" TagPrefix="sitefinity" %>
 <%@ Register TagPrefix="sitefinity" Namespace="Telerik.Sitefinity.Web.UI.Fields"
     Assembly="Telerik.Sitefinity" %>
 <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
@@ -11,6 +12,7 @@
     <sf:ResourceFile JavaScriptLibrary="JQuery" />
     <sf:ResourceFile Name="CheckoutStyles.css" />
 </sf:ResourceLinks>
+<sitefinity:FormManager ID="formManager" runat="server" />
 <div id="widgetStatus" runat="server" visible="false">
     <asp:Label ID="widgetStatusMessage" runat="server" />
 </div>
@@ -218,8 +220,7 @@
         <h2 class="sfcheckoutStepTitle">
             <asp:Literal ID="Literal2" runat="server" Text='<%$Resources:OrdersResources, ShippingOptions %>' />
         </h2>
-        <asp:RadioButtonList ID="shippingMethodsList" runat="server" DataTextField="ServiceName"
-            DataValueField="ServicePrice" CssClass="sfcheckoutFormItmCheckboxList" RepeatLayout="OrderedList" />
+        <asp:RadioButtonList ID="shippingMethodsList" runat="server" CssClass="sfcheckoutFormItmCheckboxList" RepeatLayout="OrderedList"/>
     </fieldset>
     <fieldset id="paymentOptionsForm" class="sfcheckoutShippingFormWrp sfcheckoutFormWrp"
         runat="server">
@@ -305,7 +306,7 @@
             </li>
         </ul>
     </fieldset>
-    <fieldset id="previewForm" class="sfcheckoutShippingFormWrp sfcheckoutFormWrp" runat="server">
+    <fieldset id="previewForm" class="sfcheckoutPaymentFormWrp sfcheckoutFormWrp" runat="server">
         <h2 class="sfcheckoutStepTitle">
             <asp:Literal ID="Literal4" runat="server" Text='Preview' />
         </h2>
