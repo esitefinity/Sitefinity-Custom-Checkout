@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.IO;
+using System.IO.Compression;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -637,8 +640,27 @@ namespace Telerik.Sitefinity.Samples.Ecommerce.Checkout
             }
 
             checkoutState.PaymentMethodId = paymentMethod.Id;
+            //since Sitefinity 6.2 you need to populate also this properties :
+            checkoutState.GatewayNotificationUrl = Page.Request.Url.GetLeftPart(UriPartial.Authority) + "/Ecommerce/offsite-payment-notification/";
+            checkoutState.GatewayRedirectCancelUrl = Page.Request.Url.GetLeftPart(UriPartial.Authority) + "/PathToYourCheckoutWidgetPageOrOtherPageWhenCancel";
+            string landingUrl = Page.Request.Url.GetLeftPart(UriPartial.Authority) + "/PathToConfirmationPageSayingSuccessful e.g. the same page you redirecting to in case of direct payment in place clicked handler";
+            checkoutState.GatewayRedirectSuccessUrl = Page.Request.Url.GetLeftPart(UriPartial.Authority) + "/Ecommerce/offsite-payment-return/?landingUrl=" + HttpContext.Current.Server.UrlEncode(Compress(landingUrl));
 
             return checkoutState;
+        }
+
+        internal static string Compress(string plainTextString)
+        {
+            var bytes = Encoding.Unicode.GetBytes(plainTextString);
+            using (var msi = new MemoryStream(bytes))
+            using (var mso = new MemoryStream())
+            {
+                using (var gs = new GZipStream(mso, CompressionMode.Compress))
+                {
+                    msi.CopyTo(gs);
+                }
+                return Convert.ToBase64String(mso.ToArray());
+            }
         }
 
         private void CleanUp()
